@@ -33,7 +33,8 @@ export default class AuthMiddleware {
 
     for (let guard of guards) {
       guardLastAttempted = guard
-
+      // console.log({cond: await auth.use(guard).authenticate(),});
+      
       if (await auth.use(guard).check()) {
         /**
          * Instruct auth to use the given guard as the default guard for
@@ -59,12 +60,16 @@ export default class AuthMiddleware {
   /**
    * Handle request
    */
-  public async handle ({ auth }: HttpContextContract, next: () => Promise<void>, customGuards: string[]) {
+  public async handle ({ auth, request }: HttpContextContract, next: () => Promise<void>, customGuards: string[]) {
+    console.log(request.headers());
+    
     /**
      * Uses the user defined guards or the default guard mentioned in
      * the config file
      */
     const guards = customGuards.length ? customGuards : [auth.name]
+    console.log({guards});
+    
     await this.authenticate(auth, guards)
     await next()
   }

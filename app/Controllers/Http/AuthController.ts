@@ -27,6 +27,6 @@ export default class AuthController {
       });
     return response
       .status(200)
-      .json({ success: true, token: token.toJSON(), user: auth.user });
+      .json({ success: true, token: token, user: auth.user });
   }
 }
